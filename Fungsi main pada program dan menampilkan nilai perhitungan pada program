@@ -1,0 +1,17 @@
+int main() 
+{
+int i = 0;
+int M = 0;
+int N = 0;
+printf("Masukkan maksimum vector size: ");
+scanf("%i", &M);
+printf("Masukkan interval (dikali) ukuran vector size: ");
+scanf("%i", &N);
+printf("Vector Length \t Device function time(ms) \t Host function time(ms)\n");
+for(i = 1; i < M; i *= N)
+{
+run(i);
+}
+printf("\n");
+return 0;
+}
