@@ -1,0 +1,10 @@
+//a CUDA host function
+__host__ void vectorFill_naive(float *E, int size)
+{
+int i = 0;
+//looping biasa tanpa menggunakan thread
+for(i = 0; i < size; i++)
+{
+E[i] = (float)i * size;
+}
+}
