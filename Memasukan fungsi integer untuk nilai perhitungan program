@@ -1,0 +1,12 @@
+#include <cuda.h> //CUDA library
+#include <stdio.h> //Standard input-output
+#include <time.h> //Time library to manipulate dates and times
+//a kernel function that can be called from host function to
+//generate a grid of threads on a device
+__global__ void vectorFill(float *E, int size)
+{
+//index bertipe integer diinisialisasi nilai dari thread yang //dijumlahkan dengan ukuran block dan gridnya
+int index = blockIdx.y * blockDim.y + threadIdx.y;
+//memasukkan nilai pada array dengan index yang sudah //diinisialisasi sebelumnya dikalikan ukuran vektor
+E[index] = (float)index * size;
+}
