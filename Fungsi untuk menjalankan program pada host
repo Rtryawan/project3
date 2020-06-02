@@ -1,0 +1,37 @@
+void run(int M) {
+long size = M * sizeof(float);
+float* E = (float*) malloc(size);
+float* Ed;
+clock_t start, end; //tipe clock_t dari time.h
+double diff;
+printf("%12d\t\t ", M);
+//an API's function to allocate a piece of global memory for //an object
+cudaMalloc((void**)&Ed, size);
+//transfer data dari memory host ke device
+cudaMemcpy(Ed, E, size, cudaMemcpyHostToDevice);
+//describing configuration blocks
+dim3 dimBlock(14, 14);
+//describes the configuration of grid
+dim3 dimGrid(2,2);
+//at device
+start = clock();
+vectorFill<<<dimGrid, dimBlock>>>(Ed, M);
+//agar penghitungan dalam thread selesai semuanya
+cudaThreadSynchronize();
+cudaMemcpy(E, Ed, size, cudaMemcpyDeviceToHost); //meng-copy kembali nilai dari memory device ke host
+//mengosongkan isi memory yang sudah dialokasikan sebelumnya
+cudaFree(Ed);
+end = clock();
+diff = ((double) end - start)/(double)CLOCKS_PER_SEC;
+diff *= 2500;
+printf(" %10.7f \t\t ", diff);
+//at host
+float* G = (float*) malloc(size);
+start = clock();
+vectorFill_naive(G, M);
+free(G);
+end = clock();
+diff = ((double) end - start)/(double)CLOCKS_PER_SEC;
+diff *= 2500;
+printf(" %10.7f \n", diff);
+}
